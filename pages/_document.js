@@ -4,11 +4,12 @@ export default function Document() {
   return (
     <Html lang="en">
       <Head>
-        <meta
-          name="description"
-          content="NipponTripGuide – authentic, sustainable Japan travel itineraries and flight tips."
-        />
-        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="" />
+        {/* Google AdSense */}
+        <script
+          async
+          src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-3088686255996960"
+          crossOrigin="anonymous"
+        ></script>
       </Head>
       <body>
         <Main />
