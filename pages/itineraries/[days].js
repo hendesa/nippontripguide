@@ -22,7 +22,7 @@ export default function ItineraryPage({ days, plan }) {
       <p className="text-gray-600 mb-4">Curated for traveler types: thrill-seeker, cafe lover, anime fan, crafts aficionado, and nature-first explorers.</p>
 
       {/* In-article ad */}
-      <AdUnit dataAdSlot="1234567890" />
+      <AdUnit dataAdSlot="1428237868" />
 
       <ol className="list-decimal pl-6 space-y-2">
         {plan.days.map((d, i) => (<li key={i}>{d}</li>))}
@@ -34,7 +34,7 @@ export default function ItineraryPage({ days, plan }) {
       </div>
 
       {/* Another ad near bottom */}
-      <AdUnit dataAdSlot="1234567890" />
+      <AdUnit dataAdSlot="1428237868" />
     </article>
   );
 }

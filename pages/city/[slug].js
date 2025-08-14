@@ -25,7 +25,7 @@ export default function CityPage({ city }) {
         <p className="text-gray-700">{city.summary}</p>
       </header>
 
-      <AdUnit dataAdSlot="1234567890" />
+      <AdUnit dataAdSlot="1428237868" />
 
       {/* Highlights */}
       <section>
@@ -61,7 +61,7 @@ export default function CityPage({ city }) {
         <Link href="/itineraries/21" className="underline">3-week explorer →</Link>
       </div>
 
-      <AdUnit dataAdSlot="1234567890" />
+      <AdUnit dataAdSlot="1428237868" />
     </div>
   );
 }

@@ -43,7 +43,7 @@ export default function Home() {
       </section>
 
       {/* Ad near the fold */}
-      <AdUnit dataAdSlot="1234567890" />
+      <AdUnit dataAdSlot="1428237868" />
 
       {/* Trip length cards */}
       <section>
@@ -57,7 +57,7 @@ export default function Home() {
       </section>
 
       {/* Mid-page ad */}
-      <AdUnit dataAdSlot="1234567890" />
+      <AdUnit dataAdSlot="1428237868" />
 
       {/* Cities grid */}
       <section>
@@ -83,7 +83,7 @@ export default function Home() {
       </section>
 
       {/* Bottom ad */}
-      <AdUnit dataAdSlot="1234567890" />
+      <AdUnit dataAdSlot="1428237868" />
     </div>
   );
 }
