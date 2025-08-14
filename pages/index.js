@@ -86,48 +86,4 @@ export default function Home() {
       <AdUnit dataAdSlot="1234567890" />
     </div>
   );
-}import Link from "next/link";
-import AdUnit from "../components/AdUnit";
-import CardLink from "../components/CardLink";
-import { cities } from "../data/cities";
-
-export default function Home() {
-  return (
-    <div className="space-y-8">
-      <section className="text-center">
-        <h1 className="text-4xl font-extrabold">Konnichiwa and Welcome to NipponTripGuide — your expert friend for the ultimate Japan adventure! 🌸✨</h1>
-        <p className="mt-4 text-lg text-gray-700">
-          Our mission: make travel joyful and sustainable by guiding explorers beyond overcrowded spots to hidden gems—supporting local people, culture, and nature.
-        </p>
-      </section>
-
-      {/* Top ad near fold */}
-      <AdUnit dataAdSlot="1234567890" />
-
-      <section>
-        <h2 className="text-2xl font-bold mb-3">Plan by Trip Length</h2>
-        <div className="grid md:grid-cols-4 gap-4">
-          <CardLink href="/itineraries/7" title="7 Days">Tokyo → Kyoto highlights with cafe gems and veg-friendly picks.</CardLink>
-          <CardLink href="/itineraries/14" title="14 Days">Classic circuit plus Osaka street food and Naoshima art.</CardLink>
-          <CardLink href="/itineraries/21" title="21 Days">Add Tohoku or Shikoku for off-path culture and nature.</CardLink>
-          <CardLink href="/itineraries/28" title="28 Days">The grand circle: cities, islands, and national parks.</CardLink>
-        </div>
-      </section>
-
-      {/* Mid-page ad to increase impressions */}
-      <AdUnit dataAdSlot="1234567890" />
-
-      <section>
-        <h2 className="text-2xl font-bold mb-3">Explore by City</h2>
-        <div className="grid md:grid-cols-4 gap-4">
-          {cities.map((c) => (
-            <CardLink key={c.slug} href={`/city/${c.slug}`} title={c.name}>{c.summary}</CardLink>
-          ))}
-        </div>
-      </section>
-
-      {/* Bottom ad before footer */}
-      <AdUnit dataAdSlot="1234567890" />
-    </div>
-  );
 }
