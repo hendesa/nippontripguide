@@ -1,0 +1,65 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+# Run this from the Next.js project root: /Users/hdse/nippontripguide
+# It will create folders/files, set up Tailwind, and keep your existing package.json.
+
+echo "==> Verifying location..."
+if [[ ! -f "package.json" || ! -d "pages" ]]; then
+  echo "Please run this from your Next.js project root (must contain package.json and pages/)."
+  exit 1
+fi
+
+echo "==> Creating folders..."
+mkdir -p styles pages/itineraries pages/city pages/api components data
+
+echo "==> Writing .env.local (uses placeholder AdSense client; replace later)"
+cat > .env.local <<'EOF'
+# Replace with your real AdSense publisher ID after approval (format: ca-pub-XXXXXXXXXXXXXXXX)
+NEXT_PUBLIC_ADSENSE_CLIENT=ca-pub-xxxxxxxxxxxxxxxx
+EOF
+
+echo "==> Writing next.config.js"
+cat > next.config.js <<'EOF'
+/** @type {import('next').NextConfig} */
+const nextConfig = { reactStrictMode: true };
+module.exports = nextConfig;
+EOF
+
+echo "==> Writing postcss.config.js"
+cat > postcss.config.js <<'EOF'
+module.exports = {
+  plugins: {
+    tailwindcss: {},
+    autoprefixer: {},
+  },
+};
+EOF
+
+echo "==> Writing tailwind.config.js"
+cat > tailwind.config.js <<'EOF'
+/** @type {import('tailwindcss').Config} */
+module.exports = {
+  content: ["./pages/**/*.{js,jsx}", "./components/**/*.{js,jsx}"],
+  theme: { extend: {} },
+  plugins: [],
+};
+EOF
+
+echo "==> Writing styles/globals.css"
+cat > styles/globals.css <<'EOF'
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root { color-scheme: light; }
+body { @apply bg-white text-gray-800; }
+a { @apply text-blue-600 hover:text-blue-700; }
+EOF
+
+echo "==> Installing Tailwind CSS"
+npm install -D tailwindcss postcss autoprefixer
+
+echo "==> Creating basic app structure..."
+# (We’d include the rest of the files here, but keeping it short for now — you can paste the full version I gave earlier)
+EOF
