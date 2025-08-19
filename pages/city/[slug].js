@@ -1,67 +1,55 @@
-import Image from "next/image";
-import { cities } from "../../data/cities";
-import AdUnit from "../../components/AdUnit";
+// pages/city/[slug].js
+import { useRouter } from "next/router";
 import Link from "next/link";
+import attractions from "../../data/attractions.json"; // <-- we’ll keep all attractions in a JSON file
 
-export function getStaticPaths() {
-  return { paths: cities.map((c) => `/city/${c.slug}`), fallback: false };
-}
-export function getStaticProps({ params }) {
-  const city = cities.find((c) => c.slug === params.slug) || null;
-  return { props: { city } };
-}
+export default function CityPage() {
+  const router = useRouter();
+  const { slug } = router.query;
 
-export default function CityPage({ city }) {
-  if (!city) return <p>City not found</p>;
+  // Find attractions that belong to this city
+  const cityAttractions = attractions.filter(
+    (place) => place.city.toLowerCase() === slug?.toLowerCase()
+  );
+
+  if (!slug) return <p>Loading...</p>;
+
   return (
-    <div className="space-y-6">
-      {/* City hero */}
-      <div className="relative h-64 md:h-80 w-full overflow-hidden rounded-2xl">
-        <Image src={city.image} alt={city.name} fill className="object-cover" priority />
-      </div>
+    <div style={{ padding: "2rem" }}>
+      <h1 style={{ fontSize: "2rem", fontWeight: "bold" }}>
+        Explore {slug.charAt(0).toUpperCase() + slug.slice(1)}
+      </h1>
+      <p style={{ marginBottom: "1rem" }}>
+        Our handpicked attractions for {slug}.
+      </p>
 
-      <header>
-        <h1 className="text-3xl font-bold">{city.name} Travel Guide</h1>
-        <p className="text-gray-700">{city.summary}</p>
-      </header>
-
-      <AdUnit dataAdSlot="1428237868" />
-
-      {/* Highlights */}
-      <section>
-        <h2 className="text-2xl font-semibold mb-2">Hidden Gems & Sustainable Picks</h2>
-        <ul className="list-disc pl-6 space-y-1">
-          {city.highlights.map((h, i) => (<li key={i}>{h}</li>))}
+      {cityAttractions.length === 0 ? (
+        <p>No attractions found for this city yet!</p>
+      ) : (
+        <ul style={{ display: "grid", gap: "1rem" }}>
+          {cityAttractions.map((place) => (
+            <li
+              key={place.slug}
+              style={{
+                border: "1px solid #ddd",
+                padding: "1rem",
+                borderRadius: "8px",
+              }}
+            >
+              <h2 style={{ fontSize: "1.2rem", marginBottom: "0.5rem" }}>
+                {place.name}
+              </h2>
+              <p>{place.shortDescription}</p>
+              <Link href={`/attraction/${place.slug}`}>
+                <span style={{ color: "blue", cursor: "pointer" }}>
+                  👉 Read more
+                </span>
+              </Link>
+            </li>
+          ))}
         </ul>
-      </section>
-
-      {/* Photo gallery */}
-      {city.photos?.length ? (
-        <section>
-          <h3 className="text-xl font-semibold mb-2">Photo vibes</h3>
-          <div className="grid md:grid-cols-2 gap-4">
-            {city.photos.map((p, i) => (
-              <figure key={i} className="border rounded-xl overflow-hidden">
-                <div className="relative h-56">
-                  <Image src={p.url} alt={p.title} fill className="object-cover" />
-                </div>
-                <figcaption className="p-2 text-xs text-gray-600">
-                  {p.title} — <a className="underline" href={p.creditLink} target="_blank" rel="noreferrer">{p.creditText}</a>
-                </figcaption>
-              </figure>
-            ))}
-          </div>
-        </section>
-      ) : null}
-
-      {/* Cross-links to keep users clicking */}
-      <div className="grid md:grid-cols-3 gap-4">
-        <Link href="/itineraries/7" className="underline">Plan a 7-day hop →</Link>
-        <Link href="/itineraries/14" className="underline">2-week classic loop →</Link>
-        <Link href="/itineraries/21" className="underline">3-week explorer →</Link>
-      </div>
-
-      <AdUnit dataAdSlot="1428237868" />
+      )}
     </div>
   );
-}
+}/* city page code goes here (we added this earlier).
+   If you need me to paste it again, say "send city page code". */
