@@ -4,40 +4,72 @@ import Link from "next/link";
 import AdUnit from "../../components/AdUnit";
 import { attractions } from "../../data/attractions";
 
+/** Build-time: generate /attraction/<slug> pages for every item in data/attractions.js */
 export function getStaticPaths() {
-  return { paths: attractions.map(a => `/attraction/${a.slug}`), fallback: false };
+  return {
+    paths: attractions.map((a) => `/attraction/${a.slug}`),
+    fallback: false,
+  };
 }
 
+/** Build-time: provide the data for one attraction page */
 export function getStaticProps({ params }) {
-  const item = attractions.find(a => a.slug === params.slug) || null;
+  const item = attractions.find((a) => a.slug === params.slug) || null;
   return { props: { item } };
 }
 
-const Pill = ({ children }) => (
-  <span className="inline-block rounded-full border px-3 py-1 text-xs mr-2 mb-2">{children}</span>
-);
+/** Small helper for tag chips */
+function Pill({ children }) {
+  return (
+    <span className="inline-block rounded-full border px-3 py-1 text-xs mr-2 mb-2">
+      {children}
+    </span>
+  );
+}
 
 export default function AttractionPage({ item }) {
-  if (!item) return <p>Attraction not found.</p>;
+  if (!item) return <p className="p-6">Attraction not found.</p>;
+
   const t = item.tags || {};
 
   return (
     <article className="space-y-6">
-      <div className="relative h-64 md:h-96 w-full overflow-hidden rounded-2xl">
-        <Image src={item.image} alt={item.name} fill className="object-cover" priority />
-      </div>
+      {/* Hero image */}
+      {item.image && (
+        <div className="relative h-64 md:h-96 w-full overflow-hidden rounded-2xl">
+          <Image
+            src={item.image}
+            alt={item.name}
+            fill
+            priority
+            className="object-cover"
+          />
+        </div>
+      )}
 
+      {/* Title + summary */}
       <header>
         <h1 className="text-3xl font-extrabold">{item.name}</h1>
-        <p className="text-gray-700">{item.summary}</p>
+        {item.summary && <p className="text-gray-700">{item.summary}</p>}
       </header>
 
+      {/* Ad block */}
       <AdUnit dataAdSlot="1428237868" />
 
-      <section className="prose max-w-none">
-        {item.body.trim().split("\n").filter(Boolean).map((p, i) => <p key={i}>{p.trim()}</p>)}
-      </section>
+      {/* Body paragraphs */}
+      {item.body && (
+        <section className="prose max-w-none">
+          {item.body
+            .trim()
+            .split("\n")
+            .filter(Boolean)
+            .map((p, i) => (
+              <p key={i}>{p.trim()}</p>
+            ))}
+        </section>
+      )}
 
+      {/* Audience tags */}
       <section>
         <h2 className="text-2xl font-semibold mb-2">Who will love this?</h2>
         <div>
@@ -61,6 +93,7 @@ export default function AttractionPage({ item }) {
         </div>
       </section>
 
+      {/* Fun fact */}
       {item.didYouKnow && (
         <section className="border rounded-xl p-4 bg-gray-50">
           <h3 className="font-semibold mb-1">🎌 Did you know?</h3>
@@ -68,11 +101,21 @@ export default function AttractionPage({ item }) {
         </section>
       )}
 
+      {/* Links */}
       <div className="flex flex-wrap gap-4">
-        <a className="underline" href={item.mapUrl} target="_blank" rel="noreferrer">Open in Google Maps →</a>
-        <Link className="underline" href={`/city/${item.city.toLowerCase()}`}>More in {item.city} →</Link>
+        {item.mapUrl && (
+          <a className="underline" href={item.mapUrl} target="_blank" rel="noreferrer">
+            Open in Google Maps →
+          </a>
+        )}
+        {item.city && (
+          <Link className="underline" href={`/city/${item.city.toLowerCase()}`}>
+            More in {item.city} →
+          </Link>
+        )}
       </div>
 
+      {/* Bottom ad */}
       <AdUnit dataAdSlot="1428237868" />
     </article>
   );

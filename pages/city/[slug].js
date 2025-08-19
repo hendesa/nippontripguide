@@ -1,55 +1,50 @@
 // pages/city/[slug].js
+
 import { useRouter } from "next/router";
 import Link from "next/link";
-import attractions from "../../data/attractions.json"; // <-- we’ll keep all attractions in a JSON file
+import cities from "../../data/cities";
+import attractions from "../../data/attractions";
 
 export default function CityPage() {
   const router = useRouter();
   const { slug } = router.query;
 
-  // Find attractions that belong to this city
-  const cityAttractions = attractions.filter(
-    (place) => place.city.toLowerCase() === slug?.toLowerCase()
-  );
-
   if (!slug) return <p>Loading...</p>;
 
-  return (
-    <div style={{ padding: "2rem" }}>
-      <h1 style={{ fontSize: "2rem", fontWeight: "bold" }}>
-        Explore {slug.charAt(0).toUpperCase() + slug.slice(1)}
-      </h1>
-      <p style={{ marginBottom: "1rem" }}>
-        Our handpicked attractions for {slug}.
-      </p>
+  const city = cities.find((c) => c.slug === slug);
 
+  if (!city) return <p>City not found!</p>;
+
+  // Filter attractions for this city
+  const cityAttractions = attractions.filter((a) => a.citySlug === slug);
+
+  return (
+    <div className="max-w-3xl mx-auto p-6">
+      <h1 className="text-3xl font-bold mb-4">{city.name}</h1>
+      <p className="text-gray-700 mb-6">{city.description}</p>
+
+      <h2 className="text-2xl font-semibold mb-3">Featured Spots 🌸</h2>
       {cityAttractions.length === 0 ? (
-        <p>No attractions found for this city yet!</p>
+        <p>No attractions listed yet for this city.</p>
       ) : (
-        <ul style={{ display: "grid", gap: "1rem" }}>
-          {cityAttractions.map((place) => (
-            <li
-              key={place.slug}
-              style={{
-                border: "1px solid #ddd",
-                padding: "1rem",
-                borderRadius: "8px",
-              }}
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
+          {cityAttractions.map((a) => (
+            <div
+              key={a.slug}
+              className="border rounded-lg p-4 shadow-sm hover:shadow-md transition"
             >
-              <h2 style={{ fontSize: "1.2rem", marginBottom: "0.5rem" }}>
-                {place.name}
-              </h2>
-              <p>{place.shortDescription}</p>
-              <Link href={`/attraction/${place.slug}`}>
-                <span style={{ color: "blue", cursor: "pointer" }}>
-                  👉 Read more
-                </span>
+              <h3 className="text-xl font-semibold">{a.name}</h3>
+              <p className="text-gray-600 mb-3">{a.description}</p>
+              <Link
+                href={`/attraction/${a.slug}`}
+                className="text-blue-600 hover:underline"
+              >
+                Learn more →
               </Link>
-            </li>
+            </div>
           ))}
-        </ul>
+        </div>
       )}
     </div>
   );
-}/* city page code goes here (we added this earlier).
-   If you need me to paste it again, say "send city page code". */
+}
